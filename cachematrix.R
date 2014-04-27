@@ -5,15 +5,17 @@
 
 makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL
+  
+  # Create "packing/unpacking" functions similar to the example
   set <- function(y) 
   {
     x <<- y
     inv <<- NULL
   }
-  
   get <- function() x
   setInv <- function(inv) inv <<- inv
   getInv <- function() inv
+  
   list(set = set, get = get,
        setInv = setInv,
        getInv = getInv)
@@ -24,13 +26,16 @@ makeCacheMatrix <- function(x = matrix()) {
 ##    otherwise, compute and cache the matrix inverse
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+
+  ## Attempt to read the inverse from the cache
   matInv <- x$getInv()
   if(!is.null(matInv))
     return(matInv)
   
+  ## Nothing cached, compute and cache the inverse
   mat <- x$get()
   matInv <- solve(mat, ...)
   x$setInv(matInv)
+  
   matInv
 }
